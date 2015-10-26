@@ -31,6 +31,8 @@ class Koan09 extends GroovyTestCase {
         // add a sayHello() method that returns "Hello from ${firstName}"
         def expando = new Expando()
         // ------------ START EDITING HERE ----------------------
+            expando.firstName = 'Peter'
+            expando.sayHello = {"Hello from ${expando.firstName}"}
 
 
         // ------------ STOP EDITING HERE  ----------------------
@@ -48,7 +50,8 @@ class Koan09 extends GroovyTestCase {
         // Using the NukeInterceptor, make sure that only admin is allowed to run this service.
         def proxy
         // ------------ START EDITING HERE ----------------------
-
+            proxy = ProxyMetaClass.getInstance(SensitiveService)
+            proxy.interceptor = new NukeInterceptor()
 
         // ------------ STOP EDITING HERE  ----------------------
 
@@ -69,7 +72,7 @@ class Koan09 extends GroovyTestCase {
         // In Java, we only have the 'this' keyword. It returns the current instance. Groovy does exactly the same.
         def expectedThisClassName
         // ------------ START EDITING HERE ----------------------
-
+            expectedThisClassName = {getThisObject().class.name}.call()
 
         // ------------ STOP EDITING HERE  ----------------------
         assert this.class.name == expectedThisClassName
@@ -98,7 +101,8 @@ class Koan09 extends GroovyTestCase {
         // Can you figure out what the values for weightOnEarth and weightOnMoon are?
         def expectedWeightOnMoon, expectedWeightOnEarth
         // ------------ START EDITING HERE ----------------------
-
+            expectedWeightOnMoon = new ConstantsOnMoon().gravity*10;
+            expectedWeightOnEarth = new ConstantsOnEarth().gravity*10;
 
         // ------------ STOP EDITING HERE  ----------------------
         assert weightOnEarth == expectedWeightOnEarth
@@ -108,7 +112,7 @@ class Koan09 extends GroovyTestCase {
         // http://stackoverflow.com/questions/8120949/what-does-delegate-mean-in-groovy/8121750#8121750
         // Create a fake environment using the technique in the link to create a gravity of 6
         // ------------ START EDITING HERE ----------------------
-
+            calculateWeight.delegate = [gravity:6]
 
         // ------------ STOP EDITING HERE  ----------------------
         def weightOnFakePlanet = calculateWeight(10)
@@ -162,7 +166,12 @@ class Koan09 extends GroovyTestCase {
         //   - otherwise, return the number itself (as a String)
 
         // ------------ START EDITING HERE ----------------------
-
+            Integer.metaClass.fizzBuzz << {
+                if (delegate%15==0) return 'FizzBuzz'
+                if (delegate%5==0) return 'Buzz'
+                if (delegate%3==0) return 'Fizz'
+                delegate.toString()
+            }
 
         // ------------ STOP EDITING HERE  ----------------------
         def fizzBuzzes = (1..15).collect { it.fizzBuzz() }

@@ -28,7 +28,18 @@ class Koan08 extends GroovyTestCase {
 
         def magicClosure = { input ->
             // ------------ START EDITING HERE ----------------------
-
+                switch (input) {
+                    case 1..100:
+                        return input/2
+                        break
+                    case String:
+                        String s = input as String
+                        return (s.endsWith('ee'))?s.replaceFirst(/ee$/,'ey'):s
+                        break;
+                    default:
+                        return input
+                        break;
+                }
 
             // ------------ STOP EDITING HERE  ----------------------
         }
@@ -87,7 +98,8 @@ class Koan08 extends GroovyTestCase {
         // Create a closure that returns two random integers between 0 (inclusive) to maxInt (exclusive)
         def generateTwoRandomInts = { int maxInt ->
             // ------------ START EDITING HERE ----------------------
-
+            Random rng = new Random()
+            return [rng.nextInt(maxInt),rng.nextInt(maxInt)]
 
             // ------------ STOP EDITING HERE  ----------------------
         }

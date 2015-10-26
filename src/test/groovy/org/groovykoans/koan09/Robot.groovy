@@ -11,7 +11,31 @@ import org.codehaus.groovy.runtime.InvokerHelper
 
 class Robot {
     // ------------ START EDITING HERE ----------------------
+    int x;
+    int y;
+    void left(){
+        x--
+    }
+    void right(){
+        x++
+    }
+    void up(){
+        y++
+    }
+    void down(){
+        y--
+    }
 
+    def invokeMethod(String name,Object args){
+        if (name.startsWith('go')){
+            def directions = name.findAll(/Right|Left|Up|Down/).collect{ it.toLowerCase()}
+            directions.each {
+                println it
+                this."$it"();
+            }
+        }
+        return name;
+    }
 
     // ------------ STOP EDITING HERE  ----------------------
 }

@@ -35,7 +35,7 @@ class Koan04 extends GroovyTestCase {
         // What is the result from the above execution?
         def expectedHelloClosureResult
         // ------------ START EDITING HERE ----------------------
-
+            expectedHelloClosureResult = 'Hello from Closure'
 
         // ------------ STOP EDITING HERE  ----------------------
         assert helloClosureResult == expectedHelloClosureResult
@@ -47,7 +47,7 @@ class Koan04 extends GroovyTestCase {
         // What is the result from the above execution?
         String expectedHelloRonalda
         // ------------ START EDITING HERE ----------------------
-
+            expectedHelloRonalda = 'Hello Ronalda'
 
         // ------------ STOP EDITING HERE  ----------------------
         assert helloRonalda == expectedHelloRonalda
@@ -61,7 +61,7 @@ class Koan04 extends GroovyTestCase {
         // What is the result from the above execution?
         def expectedHappyBirthdayGranger
         // ------------ START EDITING HERE ----------------------
-
+            expectedHappyBirthdayGranger = 'Happy Birthday To Hermione'
 
         // ------------ STOP EDITING HERE  ----------------------
         assert happyBirthdayGranger == expectedHappyBirthdayGranger
@@ -69,7 +69,7 @@ class Koan04 extends GroovyTestCase {
         // Create a closure that accepts two integers, adds them, and multiplies the result by two
         def resultClosure
         // ------------ START EDITING HERE ----------------------
-
+            resultClosure = { int a,int b -> (a+b)*2 }
 
         // ------------ STOP EDITING HERE  ----------------------
 
@@ -100,7 +100,7 @@ class Koan04 extends GroovyTestCase {
 
         // Let's check that we got the same result (you can use the assertX methods)
         // ------------ START EDITING HERE ----------------------
-
+            assert groovyResult == javaResult
 
         // ------------ STOP EDITING HERE  ----------------------
 
@@ -111,12 +111,14 @@ class Koan04 extends GroovyTestCase {
         // http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/String.html#eachMatch(java.lang.String, groovy.lang.Closure)
         "I have seen blue monkeys, red monkeys, and purple monkeys".eachMatch('(\\w+) monkeys') { entireMatch, color ->
             monkeyColors.add(color)
+            println entireMatch
+            println color
         }
 
         // What will monkeyColors contain?
         def expectedMonkeyColors = []
         // ------------ START EDITING HERE ----------------------
-
+            expectedMonkeyColors = ['blue','red','purple']
 
         // ------------ STOP EDITING HERE  ----------------------
         assert monkeyColors == expectedMonkeyColors
@@ -129,7 +131,7 @@ class Koan04 extends GroovyTestCase {
         StringWriter filteredResult = new StringWriter()
         def prefix = 'src/test/groovy/org/groovykoans/koan04/'
         // ------------ START EDITING HERE ----------------------
-
+            new File("$prefix/exercise.txt").filterLine (filteredResult){String line -> !line.startsWith('#')}
 
         // ------------ STOP EDITING HERE  ----------------------
 
@@ -148,7 +150,7 @@ class Koan04 extends GroovyTestCase {
         // http://docs.groovy-lang.org/latest/html/groovy-jdk/java/lang/String.html
         def expectedCount
         // ------------ START EDITING HERE ----------------------
-
+            expectedCount = 3
 
         // ------------ STOP EDITING HERE  ----------------------
 
@@ -163,7 +165,7 @@ class Koan04 extends GroovyTestCase {
         // What will the value of mysteryList be?
         def expectedMysteryList
         // ------------ START EDITING HERE ----------------------
-
+            expectedMysteryList = mysteryList.drop(0);
 
         // ------------ STOP EDITING HERE  ----------------------
         assert mysteryList == expectedMysteryList

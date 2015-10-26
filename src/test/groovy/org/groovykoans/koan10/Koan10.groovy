@@ -7,6 +7,7 @@
 
 package org.groovykoans.koan10
 
+import groovy.util.slurpersupport.GPathResult
 import groovy.xml.MarkupBuilder
 
 /**
@@ -34,7 +35,9 @@ class Koan10 extends GroovyTestCase {
         // and find out how many movies are listed.
         def movieCount
         // ------------ START EDITING HERE ----------------------
-
+        GPathResult moviesXml = new XmlSlurper().parse('/home/peter/IdeaProjects/groovykoans/src/test/groovy/org/groovykoans/koan10/movies.xml')
+        println moviesXml
+        movieCount = moviesXml.movie.size()
 
         // ------------ STOP EDITING HERE  ----------------------
         assert movieCount == 7
@@ -43,7 +46,12 @@ class Koan10 extends GroovyTestCase {
         // Hint: pay attention to the type of objects you're getting.
         List<String> moviesWithThe = []
         // ------------ START EDITING HERE ----------------------
-
+        GPathResult moviesXml2 = new XmlSlurper().parse('/home/peter/IdeaProjects/groovykoans/src/test/groovy/org/groovykoans/koan10/movies.xml')
+            def filtered = moviesXml2.movie.title.findAll { title ->
+                 title.text().toLowerCase().contains('the')
+            }
+            println filtered
+            moviesWithThe = filtered.collect {it.text()}
 
         // ------------ STOP EDITING HERE  ----------------------
         assert moviesWithThe.containsAll(['Conan the Barbarian', 'The Expendables', 'The Terminator'])
@@ -51,8 +59,8 @@ class Koan10 extends GroovyTestCase {
         // How many movie ids have a value greater than 5?
         def movieIdsGreaterThan5
         // ------------ START EDITING HERE ----------------------
-
-
+        GPathResult moviesXml3 = new XmlSlurper().parse('/home/peter/IdeaProjects/groovykoans/src/test/groovy/org/groovykoans/koan10/movies.xml')
+        movieIdsGreaterThan5 = moviesXml3.movie.findAll{movie -> movie.@id.text().toInteger()>5}.size()
         // ------------ STOP EDITING HERE  ----------------------
         assert movieIdsGreaterThan5 == 2
     }
@@ -65,7 +73,12 @@ class Koan10 extends GroovyTestCase {
 
         List<String> sortedList = []
         // ------------ START EDITING HERE ----------------------
-
+        GPathResult moviesXml = new XmlSlurper().parse('/home/peter/IdeaProjects/groovykoans/src/test/groovy/org/groovykoans/koan10/movies.xml')
+        sortedList = moviesXml.movie.list().sort{node1,node2 ->
+            int year1 = node1.year.text().toInteger()
+            int year2 = node2.year.text().toInteger()
+            (year1==year2)?node1.title.text()<=>node2.title.text():year1<=>year2
+        }.collect{it.title.text()}
 
         // ------------ STOP EDITING HERE  ----------------------
         assert sortedList == ['Conan the Barbarian', 'The Terminator', 'Predator',
@@ -90,6 +103,14 @@ class Koan10 extends GroovyTestCase {
         // Using MarkupBuilder, create the above html as String
         def html
         // ------------ START EDITING HERE ----------------------
+        def writer = new StringWriter()
+        def builder = new MarkupBuilder(writer)
+        builder.html(){
+            body(){
+                h1('title')
+            }
+        }
+        html = writer.toString()
 
 
         // ------------ STOP EDITING HERE  ----------------------
@@ -107,6 +128,15 @@ class Koan10 extends GroovyTestCase {
 
         String convertedXml
         // ------------ START EDITING HERE ----------------------
+        def reader = new XmlSlurper().parse('/home/peter/IdeaProjects/groovykoans/src/test/groovy/org/groovykoans/koan10/movies.xml')
+        def writer = new StringWriter()
+        def builder = new MarkupBuilder(writer)
+        builder.movies {
+            reader.movie.each { movieNode ->
+                movie(id:movieNode["@id"].text(),title:movieNode.title.text(),year:movieNode.year.text())
+            }
+        }
+        convertedXml = writer.toString()
 
 
         // ------------ STOP EDITING HERE  ----------------------
